@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ vacancy.name }}</title>
+</head>
+<body>
+    <h1>{{ vacancy.name }}</h1>
+    
+    <div class="vacancy-details">
+        <p><strong>Работа:</strong> {{ vacancy.job.name }}</p>
+        <p><strong>Зарплата:</strong> {{ vacancy.salary }} руб.</p>
+        <p><strong>Дата публикации:</strong> {{ vacancy.created }}</p>
+        <p><strong>Описание:</strong></p>
+        <p>{{ vacancy.description|linebreaks }}</p>
+    </div>
+    
+    {% if recommendations %}
+        <h2>Рекомендуем также ({{ vacancy.job.name }}):</h2>
+        <div class="recommendations">
+            {% for rec in recommendations %}
+                <div class="recommended-vacancy">
+                    <h3>
+                        <a href="{% url 'vacancy_detail' rec.slug %}">
+                            {{ rec.name }}
+                        </a>
+                    </h3>
+                    <p>Зарплата: {{ rec.salary }} руб.</p>
+                    <p>Дата: {{ rec.created }}</p>
+                </div>
+                {% if not forloop.last %}<hr>{% endif %}
+            {% endfor %}
+        </div>
+    {% endif %}
+    
+    <p><a href="{% url 'vacancy_list' %}">← Назад к списку вакансий</a></p>
+</body>
+</html>

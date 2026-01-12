@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Список вакансий</title>
+</head>
+<body>
+    <h1>Список вакансий</h1>
+    
+    <!-- Фильтр по работе -->
+    <form method="get">
+        <select name="job" onchange="this.form.submit()">
+            <option value="">Все работы</option>
+            {% for job in jobs %}
+                <option value="{{ job.slug }}" 
+                        {% if selected_job == job.slug %}selected{% endif %}>
+                    {{ job.name }}
+                </option>
+            {% endfor %}
+        </select>
+    </form>
+    
+    <hr>
+    
+    <!-- Список вакансий -->
+    <div class="vacancies">
+        {% for vacancy in vacancies %}
+            <div class="vacancy">
+                <h2>
+                    <a href="{% url 'vacancy_detail' vacancy.slug %}">
+                        {{ vacancy.name }}
+                    </a>
+                </h2>
+                <p><strong>Работа:</strong> {{ vacancy.job.name }}</p>
+                <p><strong>Зарплата:</strong> {{ vacancy.salary }} руб.</p>
+                <p><strong>Дата:</strong> {{ vacancy.created }}</p>
+                <hr>
+            </div>
+        {% empty %}
+            <p>Нет доступных вакансий</p>
+        {% endfor %}
+    </div>
+</body>
+</html>
