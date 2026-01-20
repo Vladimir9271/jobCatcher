@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html class="page">
+<head>
+    <title>Регистрация</title>
+    <style>
+        /* Базовые стили - ОДИНАКОВЫЕ С ФОРМОЙ ВХОДА */
+        .page {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f5f7fa;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Контейнер */
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Блок заголовка */
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header__title {
+            color: #2c3e50;
+            font-size: 28px;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        /* Блок формы - переименован в register-form, но стили те же */
+        .register-form {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        /* Элементы формы - те же классы, что и в login-form */
+        .register-form__group {
+            margin-bottom: 24px;
+        }
+
+        .register-form__label {
+            display: block;
+            margin-bottom: 8px;
+            color: #34495e;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .register-form__input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e1e5eb;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        .register-form__input:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+
+        .register-form__input:hover {
+            border-color: #bdc3c7;
+        }
+
+        /* Модификатор для инпута с ошибкой */
+        .register-form__input--error {
+            border-color: #e74c3c;
+        }
+
+        .register-form__input--error:focus {
+            border-color: #e74c3c;
+            box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
+        }
+
+        /* Блок ошибки - ТОЧНО ТАКОЙ ЖЕ как в login */
+        .error-message {
+            background-color: #fee;
+            border: 1px solid #fcc;
+            border-radius: 6px;
+            padding: 12px 16px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+        }
+
+        .error-message__icon {
+            color: #e74c3c;
+            margin-right: 10px;
+            font-size: 18px;
+        }
+
+        .error-message__text {
+            color: #c0392b;
+            font-size: 14px;
+            margin: 0;
+        }
+
+        /* Блок кнопки - ТОЧНО ТАКАЯ ЖЕ как в login */
+        .button {
+            width: 100%;
+            padding: 14px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .button:hover {
+            background-color: #2980b9;
+            transform: translateY(-1px);
+        }
+
+        .button:active {
+            transform: translateY(0);
+        }
+
+        .button:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.3);
+        }
+
+        /* Блок ссылки - ТОЧНО ТАКАЯ ЖЕ как в login */
+        .link {
+            display: inline-block;
+            color: #3498db;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .link:hover {
+            color: #2980b9;
+            text-decoration: underline;
+        }
+
+        .link:focus {
+            outline: none;
+            text-decoration: underline;
+        }
+
+        /* Блок подсказки - ТОЧНО ТАКОЙ ЖЕ как в login */
+        .hint {
+            text-align: center;
+            margin-top: 24px;
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+
+        /* Блок иконки - ТОЧНО ТАКОЙ ЖЕ как в login */
+        .icon {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            background-size: contain;
+            background-repeat: no-repeat;
+        }
+
+        .icon--error {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23e74c3c"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>');
+        }
+
+        /* Новые стили ТОЛЬКО для специфичных элементов регистрации */
+        
+        /* Стиль для радиокнопок - минимальный, в том же стиле */
+        .register-form__radio-group {
+            margin-bottom: 24px;
+        }
+
+        .register-form__radio-option {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+            cursor: pointer;
+        }
+
+        .register-form__radio-input {
+            margin-right: 10px;
+            transform: scale(1.2);
+        }
+
+        .register-form__radio-label {
+            color: #34495e;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        /* Стиль для блока с выбором роли */
+        .register-form__role-label {
+            display: block;
+            margin-bottom: 12px;
+            color: #34495e;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        /* Стиль для ошибок под полями - простой и минимальный */
+        .register-form__field-error {
+            color: #e74c3c;
+            font-size: 13px;
+            margin-top: 6px;
+            display: block;
+        }
+
+        /* Медиа-запросы для адаптивности - ТОЧНО ТАКИЕ ЖЕ как в login */
+        @media (max-width: 480px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .register-form {
+                padding: 30px 20px;
+            }
+            
+            .header__title {
+                font-size: 24px;
+            }
+        }
+
+        /* Анимации - ТОЧНО ТАКИЕ ЖЕ как в login */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .register-form {
+            animation: fadeIn 0.4s ease-out;
+        }
+    </style>
+</head>
+<body class="page__body">
+    <div class="container">
+        <header class="header">
+            <h1 class="header__title">Регистрация</h1>
+        </header>
+        
+        <main class="main">
+            <form class="register-form" method="post">
+                {% csrf_token %}
+                
+                {% if form.non_field_errors %}
+                <div class="error-message" role="alert">
+                    <span class="icon icon--error" aria-hidden="true"></span>
+                    <p class="error-message__text">
+                        {% for error in form.non_field_errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </p>
+                </div>
+                {% endif %}
+                
+                <div class="register-form__group">
+                    <label class="register-form__label" for="id_username">
+                        Имя пользователя
+                    </label>
+                    <input class="register-form__input {% if form.username.errors %}register-form__input--error{% endif %}"
+                           type="text" 
+                           id="id_username" 
+                           name="username" 
+                           value="{{ form.username.value|default:'' }}"
+                           required>
+                    {% if form.username.errors %}
+                        {% for error in form.username.errors %}
+                            <span class="register-form__field-error">{{ error }}</span>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+                
+                <div class="register-form__group">
+                    <label class="register-form__label" for="id_password1">
+                        Пароль
+                    </label>
+                    <input class="register-form__input {% if form.password1.errors %}register-form__input--error{% endif %}"
+                           type="password" 
+                           id="id_password1" 
+                           name="password1" 
+                           required>
+                    {% if form.password1.errors %}
+                        {% for error in form.password1.errors %}
+                            <span class="register-form__field-error">{{ error }}</span>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+                
+                <div class="register-form__group">
+                    <label class="register-form__label" for="id_password2">
+                        Подтвердите пароль
+                    </label>
+                    <input class="register-form__input {% if form.password2.errors %}register-form__input--error{% endif %}"
+                           type="password" 
+                           id="id_password2" 
+                           name="password2" 
+                           required>
+                    {% if form.password2.errors %}
+                        {% for error in form.password2.errors %}
+                            <span class="register-form__field-error">{{ error }}</span>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+                
+                <div class="register-form__group">
+                    <span class="register-form__role-label">Выберите роль:</span>
+                    <div class="register-form__radio-group">
+                        {% for choice in form.role %}
+                        <label class="register-form__radio-option">
+                            <input class="register-form__radio-input" 
+                                   type="radio" 
+                                   name="role" 
+                                   value="{{ choice.data.value }}"
+                                   {% if choice.is_checked %}checked{% endif %}
+                                   id="id_role_{{ forloop.counter0 }}">
+                            <span class="register-form__radio-label">{{ choice.choice_label }}</span>
+                        </label>
+                        {% endfor %}
+                    </div>
+                    {% if form.role.errors %}
+                        {% for error in form.role.errors %}
+                            <span class="register-form__field-error">{{ error }}</span>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+                
+                <button class="button" type="submit">
+                    Зарегистрироваться
+                </button>
+            </form>
+            
+            <div class="hint">
+                <p class="hint__text">
+                    Уже есть аккаунт? 
+                    <a class="link" href="{% url 'login' %}">Войти</a>
+                </p>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

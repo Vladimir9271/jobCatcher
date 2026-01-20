@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'main',
+    'accounts',
 ]
 
 MIDDLEWARE = [
@@ -70,6 +71,9 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'jobCatcher.wsgi.application'
 
+AUTH_USER_MODEL = 'accounts.CustomUser'
+LOGIN_REDIRECT_URL = '/main'  # Перенаправлять на главную после входа
+LOGOUT_REDIRECT_URL = '/main'  # Перенаправлять на главную после выхода
 
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases

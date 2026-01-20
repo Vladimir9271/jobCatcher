@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html class="page">
+<head>
+    <title>Вход</title>
+    <style>
+        /* Базовые стили */
+        .page {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f5f7fa;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Контейнер */
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Блок заголовка */
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header__title {
+            color: #2c3e50;
+            font-size: 28px;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        /* Блок формы */
+        .login-form {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        /* Элементы формы */
+        .login-form__group {
+            margin-bottom: 24px;
+        }
+
+        .login-form__label {
+            display: block;
+            margin-bottom: 8px;
+            color: #34495e;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .login-form__input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e1e5eb;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        .login-form__input:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+
+        .login-form__input:hover {
+            border-color: #bdc3c7;
+        }
+
+        /* Модификатор для инпута с ошибкой */
+        .login-form__input--error {
+            border-color: #e74c3c;
+        }
+
+        .login-form__input--error:focus {
+            border-color: #e74c3c;
+            box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
+        }
+
+        /* Блок ошибки */
+        .error-message {
+            background-color: #fee;
+            border: 1px solid #fcc;
+            border-radius: 6px;
+            padding: 12px 16px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+        }
+
+        .error-message__icon {
+            color: #e74c3c;
+            margin-right: 10px;
+            font-size: 18px;
+        }
+
+        .error-message__text {
+            color: #c0392b;
+            font-size: 14px;
+            margin: 0;
+        }
+
+        /* Блок кнопки */
+        .button {
+            width: 100%;
+            padding: 14px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .button:hover {
+            background-color: #2980b9;
+            transform: translateY(-1px);
+        }
+
+        .button:active {
+            transform: translateY(0);
+        }
+
+        .button:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.3);
+        }
+
+        /* Блок ссылки */
+        .link {
+            display: inline-block;
+            color: #3498db;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .link:hover {
+            color: #2980b9;
+            text-decoration: underline;
+        }
+
+        .link:focus {
+            outline: none;
+            text-decoration: underline;
+        }
+
+        /* Блок подсказки */
+        .hint {
+            text-align: center;
+            margin-top: 24px;
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+
+        /* Блок иконки */
+        .icon {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            background-size: contain;
+            background-repeat: no-repeat;
+        }
+
+        .icon--error {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23e74c3c"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>');
+        }
+
+        /* Медиа-запросы для адаптивности */
+        @media (max-width: 480px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .login-form {
+                padding: 30px 20px;
+            }
+            
+            .header__title {
+                font-size: 24px;
+            }
+        }
+
+        /* Анимации */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-form {
+            animation: fadeIn 0.4s ease-out;
+        }
+    </style>
+</head>
+<body class="page__body">
+    <div class="container">
+        <header class="header">
+            <h1 class="header__title">Вход в систему</h1>
+        </header>
+        
+        <main class="main">
+            <form class="login-form" method="post">
+                {% csrf_token %}
+                
+                {% if form.errors %}
+                <div class="error-message" role="alert">
+                    <span class="icon icon--error" aria-hidden="true"></span>
+                    <p class="error-message__text">Неверное имя пользователя или пароль</p>
+                </div>
+                {% endif %}
+                
+                <div class="login-form__group">
+                    <label class="login-form__label" for="username">
+                        Имя пользователя
+                    </label>
+                    <input class="login-form__input {% if form.errors %}login-form__input--error{% endif %}"
+                           type="text" 
+                           id="username" 
+                           name="username" 
+                           required
+                           aria-describedby="{% if form.errors %}error-message{% endif %}"
+                           aria-invalid="{% if form.errors %}true{% else %}false{% endif %}">
+                </div>
+                
+                <div class="login-form__group">
+                    <label class="login-form__label" for="password">
+                        Пароль
+                    </label>
+                    <input class="login-form__input {% if form.errors %}login-form__input--error{% endif %}"
+                           type="password" 
+                           id="password" 
+                           name="password" 
+                           required
+                           aria-describedby="{% if form.errors %}error-message{% endif %}"
+                           aria-invalid="{% if form.errors %}true{% else %}false{% endif %}">
+                </div>
+                
+                <button class="button" type="submit">
+                    Войти
+                </button>
+            </form>
+            
+            <div class="hint">
+                <p class="hint__text">
+                    Нет аккаунта? 
+                    <a class="link" href="{% url 'register' %}">Зарегистрироваться</a>
+                </p>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

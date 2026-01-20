@@ -1,0 +1,91 @@
+<!-- main/templates/main/vacancy_form.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Создать вакансию</title>
+    <style>
+        body { font-family: Arial; max-width: 800px; margin: 0 auto; padding: 20px; }
+        .form-group { margin: 15px 0; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input, select, textarea { width: 100%; padding: 8px; }
+        textarea { height: 150px; }
+        button { background: #4CAF50; color: white; padding: 10px 20px; border: none; cursor: pointer; }
+    </style>
+    <script>
+        function generateSlug() {
+            // Получаем значение из поля названия
+            var name = document.getElementById('vacancy-name').value;
+            
+            // Преобразуем в slug: нижний регистр, латиница, заменяем пробелы на дефисы
+            var slug = name
+                .toLowerCase()
+                .replace(/[^\w\s-]/g, '')  // Убираем спецсимволы
+                .replace(/[\s]+/g, '-')    // Заменяем пробелы на дефисы
+                .replace(/--+/g, '-')      // Убираем двойные дефисы
+                .trim();
+            
+            // Заполняем скрытое поле slug
+            document.getElementById('id_slug').value = slug;
+            
+            // Показываем slug пользователю (опционально)
+            var slugPreview = document.getElementById('slug-preview');
+            if (slugPreview) {
+                slugPreview.textContent = 'URL будет: ' + slug;
+            }
+        }
+        
+        // Автоматически генерируем slug при загрузке страницы, если есть название
+        document.addEventListener('DOMContentLoaded', function() {
+            var nameField = document.getElementById('vacancy-name');
+            if (nameField && nameField.value) {
+                generateSlug();
+            }
+        });
+    </script>
+</head>
+<body>
+    <h1>Создать вакансию</h1>
+    
+    {% if user.role != 'employer' %}
+        <p style="color: red;">Эта страница только для работодателей!</p>
+        <a href="{% url 'vacancy_list' %}">Назад к вакансиям</a>
+    {% else %}
+        <!-- Показываем как будет выглядеть URL -->
+        <p id="slug-preview" style="background: #f0f0f0; padding: 5px;"></p>
+        
+        <form method="post">
+            {% csrf_token %}
+            
+            <!-- Скрытое поле slug -->
+            {{ form.slug }}
+            
+            <div class="form-group">
+                <label>Работа:</label>
+                {{ form.job }}
+            </div>
+            
+            <div class="form-group">
+                <label>Название вакансии:</label>
+                {{ form.name }}
+            </div>
+            
+            <div class="form-group">
+                <label>Описание:</label>
+                {{ form.description }}
+            </div>
+            
+            <div class="form-group">
+                <label>Зарплата:</label>
+                {{ form.salary }}
+            </div>
+            
+            <div class="form-group">
+                <label>{{ form.available }} Вакансия активна</label>
+            </div>
+            
+            <button type="submit">Создать</button>
+            <a href="{% url 'vacancy_list' %}">Отмена</a>
+        </form>
+    {% endif %}
+</body>
+</html>
