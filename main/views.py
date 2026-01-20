@@ -18,6 +18,9 @@ def vacancy_list(request):
     }
     return render(request, 'main/vacancy_list.html', context)
 
+def about(request):
+    return render(request, 'main/about.html')
+
 def vacancy_detail(request, slug):
 
     vacancy = get_object_or_404(Vacancy, slug=slug, available=True)
@@ -52,3 +55,5 @@ def vacancy_create(request):
         form = VacancyForm()
     
     return render(request, 'main/vacancy_form.html', {'form': form})
+
+

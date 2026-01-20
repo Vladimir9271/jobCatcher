@@ -1,91 +1,148 @@
-<!-- main/templates/main/vacancy_form.html -->
 <!DOCTYPE html>
-<html>
+<html class="page">
 <head>
+    <meta charset="UTF-8">
     <title>Создать вакансию</title>
+
     <style>
-        body { font-family: Arial; max-width: 800px; margin: 0 auto; padding: 20px; }
-        .form-group { margin: 15px 0; }
-        label { display: block; margin-bottom: 5px; font-weight: bold; }
-        input, select, textarea { width: 100%; padding: 8px; }
-        textarea { height: 150px; }
-        button { background: #4CAF50; color: white; padding: 10px 20px; border: none; cursor: pointer; }
-    </style>
-    <script>
-        function generateSlug() {
-            // Получаем значение из поля названия
-            var name = document.getElementById('vacancy-name').value;
-            
-            // Преобразуем в slug: нижний регистр, латиница, заменяем пробелы на дефисы
-            var slug = name
-                .toLowerCase()
-                .replace(/[^\w\s-]/g, '')  // Убираем спецсимволы
-                .replace(/[\s]+/g, '-')    // Заменяем пробелы на дефисы
-                .replace(/--+/g, '-')      // Убираем двойные дефисы
-                .trim();
-            
-            // Заполняем скрытое поле slug
-            document.getElementById('id_slug').value = slug;
-            
-            // Показываем slug пользователю (опционально)
-            var slugPreview = document.getElementById('slug-preview');
-            if (slugPreview) {
-                slugPreview.textContent = 'URL будет: ' + slug;
-            }
+        .page {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f5f7fa;
+            min-height: 100vh;
         }
-        
-        // Автоматически генерируем slug при загрузке страницы, если есть название
-        document.addEventListener('DOMContentLoaded', function() {
-            var nameField = document.getElementById('vacancy-name');
-            if (nameField && nameField.value) {
-                generateSlug();
-            }
-        });
-    </script>
+
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .card {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        .card__title {
+            margin: 0 0 20px;
+            font-size: 26px;
+            color: #2c3e50;
+        }
+
+        .form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .form__group label {
+            font-weight: 600;
+            margin-bottom: 6px;
+            display: block;
+            color: #2c3e50;
+        }
+
+        .form__group input,
+        .form__group select,
+        .form__group textarea {
+            padding: 12px 14px;
+            font-size: 15px;
+            border-radius: 8px;
+            border: 2px solid #e1e5eb;
+        }
+
+        .form__group textarea {
+            min-height: 140px;
+            resize: vertical;
+        }
+
+        .form__group input:focus,
+        .form__group select:focus,
+        .form__group textarea:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        .form__actions {
+            display: flex;
+            gap: 16px;
+            margin-top: 10px;
+        }
+
+        .button {
+            padding: 12px 24px;
+            background-color: #3498db;
+            color: #fff;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .button--secondary {
+            background-color: #bdc3c7;
+            color: #2c3e50;
+        }
+
+        .error {
+            color: #e74c3c;
+            font-weight: 600;
+        }
+    </style>
 </head>
-<body>
-    <h1>Создать вакансию</h1>
-    
-    {% if user.role != 'employer' %}
-        <p style="color: red;">Эта страница только для работодателей!</p>
-        <a href="{% url 'vacancy_list' %}">Назад к вакансиям</a>
-    {% else %}
-        <!-- Показываем как будет выглядеть URL -->
-        <p id="slug-preview" style="background: #f0f0f0; padding: 5px;"></p>
-        
-        <form method="post">
+
+<body class="page__body">
+<div class="container">
+
+    <div class="card">
+        <h1 class="card__title">Создать вакансию</h1>
+
+        {% if user.role != 'employer' %}
+            <p class="error">Эта страница доступна только работодателям</p>
+            <a href="{% url 'vacancy_list' %}" class="button button--secondary">Назад</a>
+        {% else %}
+
+        <form method="post" class="form">
             {% csrf_token %}
-            
-            <!-- Скрытое поле slug -->
             {{ form.slug }}
-            
-            <div class="form-group">
-                <label>Работа:</label>
+
+            <div class="form__group">
+                <label>Работа</label>
                 {{ form.job }}
             </div>
-            
-            <div class="form-group">
-                <label>Название вакансии:</label>
+
+            <div class="form__group">
+                <label>Название вакансии</label>
                 {{ form.name }}
             </div>
-            
-            <div class="form-group">
-                <label>Описание:</label>
+
+            <div class="form__group">
+                <label>Описание</label>
                 {{ form.description }}
             </div>
-            
-            <div class="form-group">
-                <label>Зарплата:</label>
+
+            <div class="form__group">
+                <label>Зарплата</label>
                 {{ form.salary }}
             </div>
-            
-            <div class="form-group">
+
+            <div class="form__group">
                 <label>{{ form.available }} Вакансия активна</label>
             </div>
-            
-            <button type="submit">Создать</button>
-            <a href="{% url 'vacancy_list' %}">Отмена</a>
+
+            <div class="form__actions">
+                <button type="submit" class="button">Создать</button>
+                <a href="{% url 'vacancy_list' %}" class="button button--secondary">Отмена</a>
+            </div>
         </form>
-    {% endif %}
+
+        {% endif %}
+    </div>
+
+</div>
 </body>
 </html>

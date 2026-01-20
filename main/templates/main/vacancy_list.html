@@ -216,6 +216,8 @@
                 {% if user.is_authenticated %}
                 <a href="{% url 'vacancy_list' %}" class="nav__link">Вакансии</a>
 
+                <a href="{% url 'about' %}" class="nav__link">О нас</a>
+
                 {% if user.role == 'employer' %}
                 <a href="{% url 'vacancy_create' %}" class="button">
                     Создать вакансию
