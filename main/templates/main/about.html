@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html class="page">
+
 <head>
     <meta charset="UTF-8">
     <title>О нас</title>
@@ -22,7 +23,7 @@
             background-color: white;
             padding: 30px;
             border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
         }
 
         .card__title {
@@ -49,17 +50,19 @@
 </head>
 
 <body class="page__body">
-<div class="container">
-    <div class="card">
-        <h1 class="card__title">О нас</h1>
-        <p class="card__text">
-            Добро пожаловать на JobCatcher!<br><br>
-            Мы — современная платформа для поиска и размещения вакансий, которая объединяет работодателей и соискателей.
-            Наша миссия — сделать поиск работы удобным.<br><br>
-            Здесь вы можете просматривать вакансии, создавать свои предложения работы.
-        </p>
-        <a href="{% url 'vacancy_list' %}" class="back-link"> Вернуться к списку вакансий</a>
+    <div class="container">
+        <div class="card">
+            <h1 class="card__title">О нас</h1>
+            <p class="card__text">
+                Добро пожаловать на JobCatcher!<br><br>
+                Мы — современная платформа для поиска и размещения вакансий, которая объединяет работодателей и
+                соискателей.
+                Наша миссия — сделать поиск работы удобным.<br><br>
+                Здесь вы можете просматривать вакансии, создавать свои предложения работы.
+            </p>
+            <a href="{% url 'vacancy_list' %}" class="back-link"> Вернуться к списку вакансий</a>
+        </div>
     </div>
-</div>
 </body>
+
 </html>

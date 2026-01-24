@@ -3,10 +3,6 @@ from django.contrib.auth import login
 from .forms import RegisterForm
 from django.contrib.auth import logout as auth_logout
 
-# accounts/views.py - обновите функцию register
-from django.shortcuts import render, redirect
-from django.contrib.auth import login
-from .forms import RegisterForm
 
 def register(request):
     if request.method == 'POST':
