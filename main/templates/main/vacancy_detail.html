@@ -1,113 +1,78 @@
+{% load static %}
 <!DOCTYPE html>
 <html class="page">
+
 <head>
     <meta charset="UTF-8">
     <title>{{ vacancy.name }}</title>
+    <link rel="stylesheet" href="{% static 'main/css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'main/css/detail.css' %}">
 
-    <style>
-        .page {
-            margin: 0;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background-color: #f5f7fa;
-        }
-
-        .container {
-            max-width: 900px;
-            margin: 40px auto;
-            padding: 0 20px;
-        }
-
-        .vacancy-card {
-            background-color: white;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-            margin-bottom: 30px;
-        }
-
-        .vacancy-card__title {
-            margin-top: 0;
-            font-size: 28px;
-            color: #2c3e50;
-        }
-
-        .vacancy-card__detail {
-            color: #7f8c8d;
-            margin-bottom: 8px;
-        }
-
-        .vacancy-card__description {
-            margin-top: 20px;
-            line-height: 1.6;
-            color: #2c3e50;
-        }
-
-        .recommendations__title {
-            font-size: 22px;
-            margin-bottom: 16px;
-        }
-
-        .recommendation {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.06);
-            margin-bottom: 16px;
-        }
-
-        .recommendation a {
-            color: #2c3e50;
-            text-decoration: none;
-            font-weight: 600;
-        }
-
-        .recommendation a:hover {
-            color: #3498db;
-        }
-
-        .back-link {
-            display: inline-block;
-            margin-top: 20px;
-            text-decoration: none;
-            font-weight: 500;
-            color: #3498db;
-        }
-    </style>
 </head>
 
-<body class="page__body">
-<div class="container">
-
-    <div class="vacancy-card">
-        <h1 class="vacancy-card__title">{{ vacancy.name }}</h1>
-
-        <p class="vacancy-card__detail"><strong>Работа:</strong> {{ vacancy.job.name }}</p>
-        <p class="vacancy-card__detail"><strong>Зарплата:</strong> {{ vacancy.salary }} руб.</p>
-        <p class="vacancy-card__detail"><strong>Дата:</strong> {{ vacancy.created }}</p>
-
-        <div class="vacancy-card__description">
-            {{ vacancy.description|linebreaks }}
-        </div>
+<body class="page__body detail__body" >
+    <div class="line_help">
+        <div class="linee"></div>
     </div>
+    
+    <main>
+        <div class="section">
+            <nav class="nav">
+                <a href="{% url 'vacancy_list' %}">Вакансии</a>
+                <a href="{% url 'about' %}">О нас</a>
 
-    {% if recommendations %}
-        <h2 class="recommendations__title">
-            Похожие вакансии ({{ vacancy.job.name }})
-        </h2>
+                {% if user.is_authenticated %}
+                <span>{{ user.username }} ({{ user.get_role_display }})</span>
+                {% if user.role == 'employer' %}
+                <a href="{% url 'vacancy_create' %}" class="btn">Создать</a>
+                {% endif %}
+                <a href="{% url 'logout' %}">Выйти</a>
+                {% else %}
+                <a href="{% url 'login' %}">Войти</a>
+                <a href="{% url 'register' %}" class="btn">Регистрация</a>
+                {% endif %}
+            </nav>
+        </div>
+        <div class="container">
+            <div class="section">
+                <div class="vacancy-card">
+                    <h1 class="vacancy-card__title">{{ vacancy.name }}</h1>
 
-        {% for rec in recommendations %}
-            <div class="recommendation">
-                <a href="{% url 'vacancy_detail' rec.slug %}">
-                    {{ rec.name }}
-                </a>
-                <p>Зарплата: {{ rec.salary }} руб.</p>
-                <p>Дата: {{ rec.created }}</p>
+                    <p class="vacancy-card__detail"><strong>Работа:</strong> {{ vacancy.job.name }}</p>
+                    <p class="vacancy-card__detail"><strong>Зарплата:</strong> {{ vacancy.salary }} руб.</p>
+                    <p class="vacancy-card__detail"><strong>Дата:</strong> {{ vacancy.created }}</p>
+
+                    <div class="vacancy-card__description">
+                        {{ vacancy.description|linebreaks }}
+                    </div>
+                </div>
             </div>
-        {% endfor %}
-    {% endif %}
+            <div class="section">
+                <div class="recommendations">
+                    {% if recommendations %}
+                    <h2 class="recommendations__title">
+                        Похожие вакансии ({{ vacancy.job.name }})
+                    </h2>
 
-    <a href="{% url 'vacancy_list' %}" class="back-link">← Назад к вакансиям</a>
+                    {% for rec in recommendations %}
+                    <div class="section">
+                        <div class="recommendation">
+                            <a href="{% url 'vacancy_detail' rec.slug %}">
+                                {{ rec.name }}
+                            </a>
+                            <p>Зарплата: {{ rec.salary }} руб.</p>
+                            <p>Дата: {{ rec.created }}</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    {% endif %}
 
-</div>
+                    <a href="{% url 'vacancy_list' %}" class="back-link">← Назад к вакансиям</a>
+                </div>
+            </div>
+
+        </div>
+    </main>
 </body>
+
 </html>

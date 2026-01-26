@@ -1,66 +1,62 @@
 {% load static %}
 
 <!DOCTYPE html>
-<html class="page">
+<html lang="ru" class="page">
+
 <head>
+    <meta charset="UTF-8">
     <title>Вход</title>
-    <link rel="stylesheet" href="{% static 'login.css'%} ">
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static 'main/css/login.css' %}">
+    <link rel="stylesheet" href="{% static 'main/css/base.css' %}">
 </head>
+
 <body class="page__body">
-    <div class="container">
-        <header class="header">
-            <h1 class="header__title">Вход в систему</h1>
-        </header>
-        
-        <main class="main">
-            <form class="login-form" method="post">
+    <div class="line_help">
+        <div class="linee"></div>
+    </div>
+
+    <div class="section">
+        <div class="auth">
+            <h1 class="auth__title">Вход</h1>
+
+            <form class="auth__form" method="post">
                 {% csrf_token %}
-                
+
                 {% if form.errors %}
-                <div class="error-message" role="alert">
-                    <span class="icon icon--error" aria-hidden="true"></span>
-                    <p class="error-message__text">Неверное имя пользователя или пароль</p>
+                <div class="auth__error">
+                    Неверный логин или пароль
                 </div>
                 {% endif %}
-                
-                <div class="login-form__group">
-                    <label class="login-form__label" for="username">
-                        Имя пользователя
-                    </label>
-                    <input class="login-form__input {% if form.errors %}login-form__input--error{% endif %}"
-                           type="text" 
-                           id="username" 
-                           name="username" 
-                           required
-                           aria-describedby="{% if form.errors %}error-message{% endif %}"
-                           aria-invalid="{% if form.errors %}true{% else %}false{% endif %}">
-                </div>
-                
-                <div class="login-form__group">
-                    <label class="login-form__label" for="password">
-                        Пароль
-                    </label>
-                    <input class="login-form__input {% if form.errors %}login-form__input--error{% endif %}"
-                           type="password" 
-                           id="password" 
-                           name="password" 
-                           required
-                           aria-describedby="{% if form.errors %}error-message{% endif %}"
-                           aria-invalid="{% if form.errors %}true{% else %}false{% endif %}">
-                </div>
-                
-                <button class="button" type="submit">
+
+
+                <label class="auth__label" for="username">Имя</label>
+                <input class="auth__input" type="text" id="username" name="username" placeholder="Введите своё имя"
+                    required>
+
+
+
+                <label class="auth__label" for="password">Пароль</label>
+                <input class="auth__input" type="password" id="password" name="password"
+                    placeholder="Введите свой пароль" required>
+
+
+                <button class="auth__button" type="submit">
                     Войти
                 </button>
             </form>
-            
-            <div class="hint">
-                <p class="hint__text">
-                    Нет аккаунта? 
-                    <a class="link" href="{% url 'register' %}">Зарегистрироваться</a>
-                </p>
-            </div>
-        </main>
+
+            <p class="auth__hint">
+                Нет аккаунта?
+                <a class="auth__link" href="{% url 'register' %}">Регистрация</a>
+            </p>
+        </div>
     </div>
 </body>
+
 </html>

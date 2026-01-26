@@ -28,7 +28,7 @@ def vacancy_detail(request, slug):
     recommendations = Vacancy.objects.filter(
         job=vacancy.job,
         available=True
-    ).exclude(id=vacancy.id).order_by('-created')[:4]  # 4 последние вакансии
+    ).exclude(id=vacancy.id).order_by('-created')[:4]
     
     context = {
         'vacancy': vacancy,

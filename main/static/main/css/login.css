@@ -1,0 +1,15 @@
+
+.auth{
+    background-color: #0b0d1a;
+    padding: 20px 30px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.auth__form{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
