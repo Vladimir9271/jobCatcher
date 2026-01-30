@@ -1,98 +1,18 @@
+{% load static %}
 <!DOCTYPE html>
 <html class="page">
 <head>
     <meta charset="UTF-8">
     <title>Создать вакансию</title>
-
-    <style>
-        .page {
-            margin: 0;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background-color: #f5f7fa;
-            min-height: 100vh;
-        }
-
-        .container {
-            max-width: 800px;
-            margin: 40px auto;
-            padding: 0 20px;
-        }
-
-        .card {
-            background-color: #fff;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-        }
-
-        .card__title {
-            margin: 0 0 20px;
-            font-size: 26px;
-            color: #2c3e50;
-        }
-
-        .form {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .form__group label {
-            font-weight: 600;
-            margin-bottom: 6px;
-            display: block;
-            color: #2c3e50;
-        }
-
-        .form__group input,
-        .form__group select,
-        .form__group textarea {
-            padding: 12px 14px;
-            font-size: 15px;
-            border-radius: 8px;
-            border: 2px solid #e1e5eb;
-        }
-
-        .form__group textarea {
-            min-height: 140px;
-            resize: vertical;
-        }
-
-        .form__group input:focus,
-        .form__group select:focus,
-        .form__group textarea:focus {
-            outline: none;
-            border-color: #3498db;
-        }
-
-        .form__actions {
-            display: flex;
-            gap: 16px;
-            margin-top: 10px;
-        }
-
-        .button {
-            padding: 12px 24px;
-            background-color: #3498db;
-            color: #fff;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
-            text-decoration: none;
-            border: none;
-            cursor: pointer;
-        }
-
-        .button--secondary {
-            background-color: #bdc3c7;
-            color: #2c3e50;
-        }
-
-        .error {
-            color: #e74c3c;
-            font-weight: 600;
-        }
-    </style>
+    <link rel="stylesheet" href="{% static 'main/css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'main/css/form.css' %}">
+    <script>
+    function generateSlug() {
+        // Функция остается для обратной совместимости,
+        // но теперь slug генерируется на сервере
+        return true;
+    }
+    </script>
 </head>
 
 <body class="page__body">
@@ -108,31 +28,42 @@
 
         <form method="post" class="form">
             {% csrf_token %}
-            {{ form.slug }}
+            
+             
 
             <div class="form__group">
                 <label>Работа</label>
                 {{ form.job }}
+                {% if form.job.errors %}
+                    <div class="error">{{ form.job.errors }}</div>
+                {% endif %}
             </div>
 
             <div class="form__group">
                 <label>Название вакансии</label>
                 {{ form.name }}
+                {% if form.name.errors %}
+                    <div class="error">{{ form.name.errors }}</div>
+                {% endif %}
             </div>
 
             <div class="form__group">
                 <label>Описание</label>
                 {{ form.description }}
+                {% if form.description.errors %}
+                    <div class="error">{{ form.description.errors }}</div>
+                {% endif %}
             </div>
 
             <div class="form__group">
                 <label>Зарплата</label>
                 {{ form.salary }}
+                {% if form.salary.errors %}
+                    <div class="error">{{ form.salary.errors }}</div>
+                {% endif %}
             </div>
 
-            <div class="form__group">
-                <label>{{ form.available }} Вакансия активна</label>
-            </div>
+         
 
             <div class="form__actions">
                 <button type="submit" class="button">Создать</button>

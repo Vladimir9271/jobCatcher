@@ -1,35 +1,30 @@
 from django import forms
+from django.utils.text import slugify
 from .models import Vacancy
+from unidecode import unidecode
 
 class VacancyForm(forms.ModelForm):
     class Meta:
         model = Vacancy
-        fields = ['job', 'name', 'slug', 'description', 'salary', 'available']
+        fields = ['job', 'name', 'description', 'salary']   
         widgets = {
-            'slug': forms.HiddenInput(), 
             'name': forms.TextInput(attrs={
-                'id': 'vacancy-name',
                 'placeholder': 'Название вакансии',
-                'onkeyup': 'generateSlug()'   
             }),
-            'job': forms.Select(attrs={'class': 'form-control'}),
+            'job': forms.Select(),
             'description': forms.Textarea(attrs={'rows': 5}),
             'salary': forms.NumberInput(),
-            'available': forms.CheckboxInput(),
         }
-    
-    def clean_slug(self):
 
-        slug = self.cleaned_data.get('slug')
-        name = self.cleaned_data.get('name')
-        
-        if not slug and name:
-            slug = slugify(name)
-        
+    def save(self, commit=True):
+        instance = super().save(commit=False)
 
-        if Vacancy.objects.filter(slug=slug).exists():
-            
-            import random
-            slug = f"{slug}-{random.randint(1000, 9999)}"
+       
+        instance.slug = slugify(unidecode(instance.name))
+
         
-        return slug
+        instance.available = True
+
+        if commit:
+            instance.save()
+        return instance

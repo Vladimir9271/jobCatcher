@@ -18,7 +18,7 @@ class Vacancy(models.Model):
     job = models.ForeignKey(Job, related_name='job',
                             on_delete=models.CASCADE)
     name = models.CharField(max_length=100, db_index=True)
-    slug = models.SlugField(max_length=100, unique=True)
+    slug = models.SlugField(max_length=100, unique=True, blank=True)
     description = models.TextField(blank=True)
     salary = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(100.00)])
     available = models.BooleanField(default=True)
